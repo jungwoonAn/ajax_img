@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daum-image</title>
+
+    <style>
+      img  {width:300px; height:200px; display:block;}
+    </style>
+
+  </head>
+
+  <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.0.min.js"></script>
+
+  <script>
+
+    kakaoImgApiInsert();
+
+    function kakaoImgApiInsert(){
+      //https://developers.kakao.com/tool/rest-api/open/get/v2-search-image
+
+      $.ajax({
+        type: "GET",
+        url: "https://dapi.kakao.com/v2/search/image",
+        headers: {Authorization: "KakaoAK 7b2300fc6315bb65035d1a3c7b49b161" },
+
+        data : {query : '아이유앨범',
+                sort  : '', //accuracy(정확도순) 또는 recency(최신순)
+                page  : 1, //결과 페이지 번호, 1~50 사이의 값, 기본 값 1
+                size  : 80 //한 페이지에 보여질 문서 수, 1~80 사이의 값, 기본 값 80
+               },
+
+        success: function (jdata) {
+          //console.log(jdata);
+
+          $(jdata.documents).each(function(index){ 
+            $("div#content").append('<img src="'+this.image_url+'"/>');
+          });
+
+        },
+
+        error: function (xhr, textStatus) {
+          console.log(xhr.responseText);
+          console.log("에러");
+          return;
+        }
+      });
+
+    }
+
+  </script>
+  <body>
+
+    <div id="content">
+    </div>
+
+  </body>
+</html>
+
